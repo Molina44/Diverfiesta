@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de APIs</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #f8fafc;
+            --text-color: #334155;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            display: flex;
+            margin-top: var(--header-height);
+            min-height: calc(100vh - var(--header-height));
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+            overflow-y: auto;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            height: calc(100vh - var(--header-height));
+            overflow-y: auto;
+        }
+        
+        .api-section {
+            margin-bottom: 15px;
+        }
+        
+        .api-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+        
+        .api-links {
+            list-style: none;
+            padding-left: 15px;
+        }
+        
+        .api-links li {
+            margin-bottom: 6px;
+        }
+        
+        .api-link {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 5px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .api-link:hover, .api-link.active {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 5px 0;
+            transition: 0.4s;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: block;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 99;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <h1>Documentación de APIs</h1>
+    </header>
+    
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="api-section">
+                <div class="api-title">Emails</div>
+                <ul class="api-links">
+                    <li><a href="#email-contact" class="api-link" data-url="./email.ejs">API de Envío de Contacto</a></li>
+                    <!-- Puedes agregar más enlaces a documentaciones de email aquí -->
+                </ul>
+            </div>
+            
+            <!-- Ejemplo de categoría adicional -->
+            <div class="api-section">
+                <div class="api-title">Usuarios</div>
+                <ul class="api-links">
+                    <li><a href="#user-register" class="api-link" data-url="/docs/user-register">Registro de Usuarios</a></li>
+                    <li><a href="#user-auth" class="api-link" data-url="/docs/user-auth">Autenticación</a></li>
+                    <!-- Agrega más enlaces según sea necesario -->
+                </ul>
+            </div>
+            
+            <!-- Más categorías de API -->
+            <div class="api-section">
+                <div class="api-title">Productos</div>
+                <ul class="api-links">
+                    <li><a href="#products-list" class="api-link" data-url="/docs/products-list">Listar Productos</a></li>
+                    <li><a href="#products-crud" class="api-link" data-url="/docs/products-crud">CRUD de Productos</a></li>
+                    <!-- Agrega más enlaces según sea necesario -->
+                </ul>
+            </div>
+            
+            <div class="api-section">
+                <div class="api-title">Pagos</div>
+                <ul class="api-links">
+                    <li><a href="#payment-process" class="api-link" data-url="/docs/payment-process">Procesamiento de Pagos</a></li>
+                    <!-- Agrega más enlaces según sea necesario -->
+                </ul>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <iframe id="docs-frame" src="/docs/welcome" title="Documentación de API"></iframe>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const apiLinks = document.querySelectorAll('.api-link');
+            const iframe = document.getElementById('docs-frame');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const sidebar = document.getElementById('sidebar');
+            
+            // Manejar clics en enlaces de API
+            apiLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remover clase active de todos los enlaces
+                    apiLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Agregar clase active al enlace actual
+                    this.classList.add('active');
+                    
+                    // Actualizar iframe con la URL del enlace
+                    const url = this.getAttribute('data-url');
+                    if (url) {
+                        iframe.src = url;
+                    }
+                    
+                    // En móvil, cerrar el menú después de hacer clic
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('active');
+                    }
+                    
+                    // Actualizar hash en la URL para navegación
+                    window.location.hash = this.getAttribute('href');
+                });
+            });
+            
+            // Manejar menú móvil
+            mobileMenu.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+            
+            // Cargar la documentación basada en el hash de la URL al cargar la página
+            if (window.location.hash) {
+                const hashLink = document.querySelector(`.api-link[href="${window.location.hash}"]`);
+                if (hashLink) {
+                    hashLink.click();
+                }
+            } else {
+                // Si no hay hash, cargar el primer enlace
+                if (apiLinks.length > 0) {
+                    apiLinks[0].click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

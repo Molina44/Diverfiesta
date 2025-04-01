@@ -1,11 +1,263 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Documentación API - Envío de Datos de Contacto</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 5px solid #007bff;
+        }
+        h1 {
+            color: #007bff;
+            margin-top: 0;
+        }
+        h2 {
+            color: #0056b3;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #004085;
+            margin-top: 25px;
+        }
+        .endpoint {
+            background-color: #f8f9fa;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .post {
+            background-color: #28a745;
+            color: white;
+        }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        th {
+            background-color: #f8f9fa;
+        }
+        .response {
+            margin-top: 20px;
+        }
+        .required {
+            color: #dc3545;
+        }
+        .optional {
+            color: #6c757d;
+        }
+    </style>
 </head>
 <body>
-    
+    <header>
+        <h1>Documentación API de Envío de Contacto</h1>
+        <p>Esta API permite enviar información de contacto por correo electrónico mediante un endpoint.</p>
+    </header>
+
+    <section>
+        <h2>Introducción</h2>
+        <p>La API de Envío de Contacto proporciona un servicio para enviar datos de contacto (nombre, apellido, correo electrónico y teléfono) a una dirección de correo electrónico configurada en el sistema.</p>
+        <p>La API utiliza el protocolo HTTP y acepta/devuelve datos en formato JSON.</p>
+    </section>
+
+    <section>
+        <h2>Autenticación</h2>
+        <p>Actualmente, esta API no requiere autenticación para su uso.</p>
+    </section>
+
+    <section>
+        <h2>Endpoints</h2>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/email/contact</h3>
+            <p>Envía los datos de contacto al correo electrónico configurado.</p>
+
+            <h4>Parámetros de Solicitud</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parámetro</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Requerido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>nombre</td>
+                        <td>String</td>
+                        <td>Nombre de la persona de contacto</td>
+                        <td><span class="required">Sí</span></td>
+                    </tr>
+                    <tr>
+                        <td>apellido</td>
+                        <td>String</td>
+                        <td>Apellido de la persona de contacto</td>
+                        <td><span class="required">Sí</span></td>
+                    </tr>
+                    <tr>
+                        <td>correo</td>
+                        <td>String</td>
+                        <td>Dirección de correo electrónico</td>
+                        <td><span class="required">Sí</span></td>
+                    </tr>
+                    <tr>
+                        <td>telefono</td>
+                        <td>String</td>
+                        <td>Número de teléfono de contacto</td>
+                        <td><span class="required">Sí</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplo de solicitud</h4>
+            <pre>
+POST /api/email/contact
+Content-Type: application/json
+
+{
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "correo": "juan@ejemplo.com",
+    "telefono": "123456789"
+}
+            </pre>
+
+            <h4>Respuestas</h4>
+
+            <div class="response">
+                <h5>Éxito (200 OK)</h5>
+                <pre>
+{
+    "success": true,
+    "message": "Datos de contacto enviados correctamente por correo"
+}
+                </pre>
+            </div>
+
+            <div class="response">
+                <h5>Error de validación (400 Bad Request)</h5>
+                <pre>
+{
+    "success": false,
+    "message": "Todos los campos son obligatorios: nombre, apellido, correo y telefono"
+}
+                </pre>
+            </div>
+
+            <div class="response">
+                <h5>Error del servidor (500 Internal Server Error)</h5>
+                <pre>
+{
+    "success": false,
+    "message": "Error al enviar los datos por correo",
+    "error": "Detalles del error (solo en entorno de desarrollo)"
+}
+                </pre>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Formato del Correo Electrónico</h2>
+        <p>El correo electrónico enviado contiene la siguiente estructura:</p>
+        <ul>
+            <li><strong>Asunto:</strong> Nuevo Contacto Registrado</li>
+            <li><strong>Contenido:</strong> Un formato HTML con los datos proporcionados (nombre, apellido, correo y teléfono)</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Configuración</h2>
+        <p>La API utiliza las siguientes variables de entorno:</p>
+        <ul>
+            <li><code>EMAIL_USER</code>: Correo electrónico emisor</li>
+            <li><code>EMAIL_PASS</code>: Contraseña del correo emisor</li>
+            <li><code>DESTINATION_EMAIL</code>: Correo de destino donde se enviarán los datos</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Ejemplos de Uso</h2>
+        <h3>Ejemplo con cURL</h3>
+        <pre>
+curl -X POST \
+  http://localhost:4000/api/email/contact \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "nombre": "María",
+    "apellido": "González",
+    "correo": "maria@ejemplo.com",
+    "telefono": "987654321"
+}'
+        </pre>
+
+        <h3>Ejemplo con JavaScript (Fetch API)</h3>
+        <pre>
+fetch('http://localhost:4000/api/email/contact', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    nombre: 'Carlos',
+    apellido: 'Rodríguez',
+    correo: 'carlos@ejemplo.com',
+    telefono: '456789123'
+  }),
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+        </pre>
+    </section>
+
+    <footer style="margin-top: 50px; border-top: 1px solid #e9ecef; padding-top: 20px; text-align: center;">
+        <p>API de Envío de Contacto &copy; <%= new Date().getFullYear() %></p>
+    </footer>
 </body>
 </html>
