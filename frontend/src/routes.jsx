@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 const Home = lazy(() => import('./components/page/Home'));
+const Contact = lazy(() => import('./components/page/Contact'))
 const About = lazy(() => import('./components/page/About'));
 const NotFound = lazy(() => import('./components/page/NotFound'));
 
@@ -11,6 +12,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* Ruta comodín para manejar páginas no encontradas */}
         <Route path="*" element={<NotFound />} />
